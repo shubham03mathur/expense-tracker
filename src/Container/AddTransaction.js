@@ -1,51 +1,81 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actionTypes from '../store/actionTypes';
 
 class AddTransaction extends Component {
-    state = {
-        transaction: {
-            text: '',
-            amount: 0
-        }
+
+    constructor(props) {
+        super(props);
+        this.ElRef = React.createRef();
     }
 
     handleStateChanges = (event) => {
-        const stateObj = { ...this.state.transaction };
-        stateObj[event.target.id] = event.target.value;
-        this.setState({ transaction : stateObj });
+        const stateObj = {
+            id: event.target.id,
+            type: this.ElRef.current.value,
+            value: event.target.value
+        };
+        this.props.onSyncTransaction(stateObj);
+    }
+
+    handleForm = (event) => {
+        this.ElRef.current.value = "";
+        event.preventDefault();
+        this.props.onSetTransactions();
     }
 
     render() {
-        let { transaction } = this.state;
         return (
             <React.Fragment>
-                <h3>Add new transaction</h3>
-                <form id="form">
+                <h3>Add New Transaction</h3>
+                <form id="form" onSubmit={this.handleForm}>
                     <div className="form-control">
-                    <label htmlFor="text">Text</label>
                     <input 
-                        type="text" 
-                        id="text" 
-                        placeholder="Enter text..." 
-                        value={transaction.text} 
+                        type="text"
+                        id="text"
+                        placeholder="Enter Transaction Tag/Name..."
+                        value={this.props.currentTransText}
+                        required="required"
                         onChange={(event) => this.handleStateChanges(event)}/>
                     </div>
-                    <div className="form-control">
-                    <label htmlFor="amount">
-                        Amount <br />
-                        (negative - expense, positive - income)
-                    </label>
-                    <input 
-                        type="number" 
-                        id="amount" 
-                        placeholder="Enter amount..." 
-                        value={transaction.amount}
-                        onChange={(event) => this.handleStateChanges(event)}/>
+                    <div className="form-control select">
+                        <select required="required" ref={this.ElRef} id="selectType">
+                            <option value="">Please Select Transaction Type</option>
+                            <option value="credit">Credit</option>
+                            <option value="debit">Debit</option>
+                        </select>
                     </div>
-                    <button className="btn">Add transaction</button>
+                    <div className="form-control">
+                        <input 
+                            type="number"
+                            id="amount"
+                            placeholder="Enter amount..."
+                            value={Math.abs(this.props.currentTransAmt)}
+                            required="required"
+                            onChange={(event) => this.handleStateChanges(event)}/>
+                        </div>
+                    <button className="btn">Add Transaction</button>
                 </form>
             </React.Fragment>
         );
     }
 }
 
-export default AddTransaction;
+const mapStateToProps = state => {
+    return {
+        currentTransText : state.transactions.text,
+        currentTransAmt : state.transactions.amount
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetTransactions: () => dispatch({ type: actionTypes.ADD_TRANSACTION }),
+        onSyncTransaction: (currentTransaction) => dispatch({ 
+            type: actionTypes.SYNC_CURRECT_TRANSACTION,
+            payload: currentTransaction
+        })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTransaction);

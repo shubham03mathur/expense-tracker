@@ -126,6 +126,24 @@ input[type='number'] {
   border-right: 5px solid #2ecc71;
 }
 
+.select {
+  margin: 2px 0 2px 0;
+}
+
+#selectType {
+  padding: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+#selectType option {
+  padding: 8px;
+}
+
+.list li.no-transactions {
+  border-right: 5px solid #382ecc;
+}
+
 .list li.minus {
   border-right: 5px solid #c0392b;
 }
