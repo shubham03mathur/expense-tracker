@@ -6,7 +6,7 @@ const Balance = () => {
     return (
         <>
             <h4>Your Balance</h4>
-            <h1>&#x20B9; <span>{ totalBalance }</span></h1>
+            <h1>&#x20B9;<span>{ totalBalance }</span></h1>
         </>
     )
 }

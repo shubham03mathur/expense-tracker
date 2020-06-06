@@ -19,6 +19,7 @@ class AddTransaction extends Component {
     }
 
     handleForm = (event) => {
+        this.ElRef.current.value = "";
         event.preventDefault();
         this.props.onSetTransactions();
     }

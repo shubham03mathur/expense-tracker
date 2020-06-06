@@ -12,11 +12,6 @@ const transactionReducer = (state = initialState, action) => {
         case actionTypes.SYNC_CURRECT_TRANSACTION :
             let value = action.payload.value;
             if (
-                action.payload.type === 'credit' &&
-                action.payload.id === 'amount'
-            ) {
-                value = +action.payload.value;
-            } else if(
                 action.payload.type === 'debit' &&
                 action.payload.id === 'amount'
             ) {
