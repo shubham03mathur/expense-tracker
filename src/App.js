@@ -4,7 +4,7 @@ import Header from './Components/Header';
 import Balance from './Components/Balance';
 import IncomeExpense from './Components/incomeExpense';
 import TransactionHistory from './Components/TransactionHistory';
-import AddTransaction from './Components/AddTransaction';
+import AddTransaction from './Container/AddTransaction';
 
 function App() {
   return (
