@@ -1,7 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { DELETE_TRANSACTION } from '../store/actionTypes';
+import { useSelector, useDispatch } from 'react-redux';
 
 const TransactionHistory = () => {
+    const dispatch = useDispatch();
     let transactionHistory = (
         <li className="no-transactions">
             <span>No Transactions</span>
@@ -22,8 +24,14 @@ const TransactionHistory = () => {
             }
             return (
                 <li key={transaction.id.toString()} className={classes}>
-                    {transaction.text} <span>{sign}&#x20B9; <span>{+transaction.amount}</span>
-                    </span><button className="delete-btn">x</button>
+                    {transaction.text} <span>{sign}&#x20B9; <span>{(+transaction.amount).toFixed(2)}</span>
+                    </span>
+                    <button 
+                    className="delete-btn" 
+                    onClick={() => dispatch({
+                        type: DELETE_TRANSACTION,
+                        payload: { id: transaction.id }
+                    })}>x</button>
                 </li>
             );
         })

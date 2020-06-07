@@ -47,7 +47,7 @@ class AddTransaction extends Component {
                     </div>
                     <div className="form-control">
                         <input 
-                            type="number"
+                            type="text"
                             id="amount"
                             placeholder="Enter amount..."
                             value={Math.abs(this.props.currentTransAmt)}
