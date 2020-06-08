@@ -2,11 +2,15 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
-const app = express();
-
-const transactions = require('./routes/transactions');
+const connectDB = require('./utils/connection');
 
 dotenv.config({ path: './config/config.env'});
+connectDB();
+
+const app = express();
+app.use(express.json());
+
+const transactions = require('./routes/transactions');
 
 app.get('/', (req, res) => res.send('Hello'));
 

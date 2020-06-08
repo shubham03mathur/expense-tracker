@@ -4,7 +4,9 @@ const initialState = {
     text: '',
     amount: '',
     totalBalance : 0,
-    transactionHistory: []
+    transactionHistory: [],
+    isLoading: false,
+    error: null
 }
 
 const calculateTotalBalance = (transactionHistory) => {
@@ -17,10 +19,11 @@ const calculateTotalBalance = (transactionHistory) => {
 
 const transactionReducer = (state = initialState, action) => {
     switch(action.type) {
+
         case actionTypes.DELETE_TRANSACTION :
             const transactionId = action.payload.id;
             const updatedTransactions = state.transactionHistory.filter(transaction => {
-                return transaction.id !== transactionId
+                return transaction._id !== transactionId
             });
             const totalAmt = calculateTotalBalance(updatedTransactions);
             return {
@@ -28,6 +31,7 @@ const transactionReducer = (state = initialState, action) => {
                 totalBalance : totalAmt,
                 transactionHistory : updatedTransactions
             }
+
         case actionTypes.SYNC_CURRECT_TRANSACTION :
             let value = action.payload.value;
             if (
@@ -55,6 +59,13 @@ const transactionReducer = (state = initialState, action) => {
                 totalBalance : totalBalanceAmt,
                 transactionHistory : transactionHistoryObj
             }
+
+        case actionTypes.START_TRANSACTION :
+            return {
+                ...state,
+                isLoading: true
+            }
+
         default:
             return state;
     }

@@ -24,7 +24,12 @@ const IncomeExpense = () => {
                 </div>
                 <div>
                 <h4>Expense</h4>
-                <p className="money minus">-&#x20B9;<span id="expenseAmount">{+totalExpenses.toFixed(2)}</span></p>
+                <p className="money minus">
+                    -&#x20B9;
+                    <span 
+                        id="expenseAmount">{Math.abs(+totalExpenses.toFixed(2))}
+                    </span>
+                </p>
             </div>
         </div>
     )
