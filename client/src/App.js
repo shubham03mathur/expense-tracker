@@ -5,17 +5,20 @@ import Balance from './Components/Balance';
 import IncomeExpense from './Components/incomeExpense';
 import TransactionHistory from './Components/TransactionHistory';
 import AddTransaction from './Container/AddTransaction';
+import ErrorBoundary from './Components/ErrorBoundary';
 
 function App() {
   return (
     <div>
-        <Header />
-        <div className="container">
-            <Balance />
-            <IncomeExpense />
-            <TransactionHistory />
-            <AddTransaction />
-        </div>
+        <ErrorBoundary>
+          <Header />
+          <div className="container">
+              <Balance />
+              <IncomeExpense />
+              <TransactionHistory />
+              <AddTransaction />
+          </div>
+        </ErrorBoundary>
     </div>
   );
 }

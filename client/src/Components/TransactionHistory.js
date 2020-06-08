@@ -24,13 +24,18 @@ const TransactionHistory = () => {
             }
             return (
                 <li key={transaction.id.toString()} className={classes}>
-                    {transaction.text} <span>{sign}&#x20B9; <span>{(+transaction.amount).toFixed(2)}</span>
+                    {transaction.text} 
+                        <span>
+                            {sign}&#x20B9; 
+                            <span>
+                                {Math.abs(+transaction.amount).toFixed(2)}
+                            </span>
                     </span>
                     <button 
                     className="delete-btn" 
                     onClick={() => dispatch({
                         type: DELETE_TRANSACTION,
-                        payload: { id: transaction.id }
+                        payload: { id: transaction._id }
                     })}>x</button>
                 </li>
             );
