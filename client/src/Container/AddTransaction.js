@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../store/actionTypes';
+import axios from 'axios';
 
 class AddTransaction extends Component {
 
@@ -18,10 +19,33 @@ class AddTransaction extends Component {
         this.props.onSyncTransaction(stateObj);
     }
 
+    saveDataToCloud = async (transaction) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        try {
+            const newTransaction = await axios.post('/api/v1/transactions', transaction, config);
+            if (newTransaction.data.success) {
+                this.props.onSetTransactions(newTransaction.data.data);
+            } else {
+                console.log(newTransaction.data.error);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     handleForm = (event) => {
-        this.ElRef.current.value = "";
         event.preventDefault();
-        this.props.onSetTransactions();
+        const newTransactions = {
+            text: this.props.currentTransText,
+            type: this.ElRef.current.value,
+            amount: this.props.currentTransAmt
+        }
+        this.saveDataToCloud(newTransactions);
+        this.ElRef.current.value = "";
     }
 
     render() {
@@ -70,7 +94,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetTransactions: () => dispatch({ type: actionTypes.ADD_TRANSACTION }),
+        onSetTransactions: (transaction) => dispatch({ type: actionTypes.ADD_TRANSACTION, payload: [transaction] }),
         onSyncTransaction: (currentTransaction) => dispatch({ 
             type: actionTypes.SYNC_CURRECT_TRANSACTION,
             payload: currentTransaction

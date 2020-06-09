@@ -46,10 +46,9 @@ const transactionReducer = (state = initialState, action) => {
             }
 
         case actionTypes.ADD_TRANSACTION :
-            const newId = Math.random();
             const transactionHistoryObj = [
                 ...state.transactionHistory,
-                { id: newId, text: state.text, amount: state.amount }
+                ...action.payload
             ]
             const totalBalanceAmt = calculateTotalBalance(transactionHistoryObj);
             return {
