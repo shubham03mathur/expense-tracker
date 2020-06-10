@@ -1,5 +1,4 @@
 import React from 'react';
-import NotFound from './NotFound/NotFound';
 
 class ErrorBoundary extends React.Component {
     state = {
