@@ -1,37 +1,42 @@
 import React from 'react';
 import './App.css';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
+import Loader from './Components/UI/Loader/Loader';
 import Layout from './Components/UI/Layout/Layout';
-import Balance from './Components/Balance';
 import Login from './Container/Login/Login';
+import Home from './Container/Home/Home';
+import AuthCallback from './Container/AuthCallback';
 import NotFound from './Components/NotFound/NotFound';
-import IncomeExpense from './Components/incomeExpense';
-import TransactionHistory from './Components/TransactionHistory';
-import AddTransaction from './Container/AddTransaction';
+import { useAuth0 } from "./react-auth0-spa";
 import ErrorBoundary from './Components/ErrorBoundary';
 
 function App() {
-  const toBeRenderComps = (
-      <Layout>
-        <Balance />
-        <IncomeExpense />
-        <TransactionHistory />
-        <AddTransaction />
-      </Layout>
-  );
+  let routes;
+  const { isAuthenticated, loading } = useAuth0();
 
-  return (
-      <ErrorBoundary>
-        {/* <Layout> */}
-          <Switch>
-            <Route path="/" exact  component={Login}/>
-            <Route path="/transactions" exact  component={toBeRenderComps}/>
-            <Route component={NotFound}/>
-          </Switch>
-        {/* </Layout> */}
-      </ErrorBoundary>
-  );
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (isAuthenticated) {
+    routes = (
+      <Switch>
+        <Route path="/home" exact  component={Home}/>
+        <Redirect to="/home" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact  component={Login}/>
+        <Route path="/auth0_callback" exact component={AuthCallback}/>
+        <Redirect to="/" />
+      </Switch>
+    );
+  }
+
+  return <ErrorBoundary>{ routes }</ErrorBoundary>;
 }
 
 export default App;
