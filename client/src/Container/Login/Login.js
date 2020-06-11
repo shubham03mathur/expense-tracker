@@ -2,9 +2,17 @@ import React from 'react';
 import styles from './Login.module.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { useAuth0 } from "../../react-auth0-spa";
 
 const useStyles = makeStyles((theme) => ({}));
 const Login = () =>  {
+    const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+    const logoutWithRedirect = () =>
+    logout({
+        returnTo: window.location.origin
+    });
+
     const classes = useStyles();
     const appliedClasses = [classes.root, styles.main];
     return (
@@ -16,7 +24,12 @@ const Login = () =>  {
                 <p className={styles.Description}>Hi, There! How do you want to continue?</p>
                 <div className={styles.btnHolder}>
                     <div className={styles.BtnLogin}>
-                        <Button variant="contained" color="primary" className={styles.LoginBtn}>
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            className={styles.LoginBtn}
+                            onClick={() => loginWithRedirect({ postLoginRoute: "/account" })}
+                            >
                             Login
                         </Button>
                     </div>
